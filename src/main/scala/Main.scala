@@ -3,11 +3,9 @@ import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model._
 import better.files._
-import better.files.File._
-import org.json4s._
 import org.json4s.native.JsonMethods._
 import org.json4s.JsonDSL._
-import org.json4s.JsonDSL.WithBigDecimal
+
 
 import scala.annotation.tailrec
 
@@ -131,14 +129,14 @@ object Main {
 
     val json = ("companyName" -> name) ~
       ("ticker" -> ticker) ~
-      ("marketCap" -> marketCap) ~
+      ("marketCap" -> toDollars(marketCap)) ~
       ("industry" -> industries) ~
       ("founded" -> founded) ~
       ("country" -> country) ~
       ("ceo" -> ceo) ~
-      ("employees" -> employees) ~
-      ("sales" -> sales) ~
-      ("headquarters" -> headquarters) ~
+      ("employees" -> transformEmployees(employees)) ~
+      ("sales" -> toDollars(sales)) ~
+      ("headquarters" -> filterHeadquarters(country, headquarters)) ~
       ("fiskalGraph" -> fiskalGraph)
 
     file.write(compact(render(json)))
@@ -172,7 +170,7 @@ object Main {
   }
 
   def main(args: Array[String]): Unit = {
-    val directory : File = "./jsonDocuments".toFile.createIfNotExists(true, true)
+    val directory : File = "./jsonDocuments".toFile.createIfNotExists(asDirectory = true, createParents = true)
     val browser = JsoupBrowser()
     parseNext("https://www.forbes.com", "https://www.forbes.com/companies/icbc/?list=global2000", browser, directory)
   }
