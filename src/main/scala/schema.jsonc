@@ -1,0 +1,38 @@
+//Simple company
+{
+  "companyName": "profile-heading--desktop > h1 - text",
+  "marketCap": "profile-info profile-info__contentless > profile-row--type",
+  "industry": "profile-info profile-info__contentless > profile-row--type",
+  "founded": "profile-info profile-info__contentless > profile-row--type",
+  "country": "profile-info profile-info__contentless > profile-row--type",
+  "chief": "profile-info profile-info__contentless > profile-row--type",
+  "employees": "profile-info profile-info__contentless > profile-row--type",
+  "sales": "profile-info profile-info__contentless > profile-row--type",
+  "headquarters": "profile-info profile-info__contentless > profile-row--type",
+  "fiscalYears": [
+    {
+      "revenue": "profile-graph__content content__box-0 > bar__item profile-graph__column",
+      "assets": "profile-graph__content content__box-1 > bar__item profile-graph__column",
+      "profits": "profile-graph__content content__box-2 > bar__item profile-graph__column"
+    }
+  ]
+}
+//Complex company
+{
+  "companyName": "profile-heading--desktop",
+  "marketCap": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "industry": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "founded": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "country": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "chief": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "employees": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "sales": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "headquarters": "profile-public-info__company-stats-details-row > profile-public-info__item profile-public-info-value",
+  "fiscalYears": [
+    {
+      "revenue": "profile-graph__content content__box-0 > bar__item profile-graph__column",
+      "assets": "profile-graph__content content__box-1 > bar__item profile-graph__column",
+      "profits": "profile-graph__content content__box-2 > bar__item profile-graph__column"
+    }
+  ]
+}
