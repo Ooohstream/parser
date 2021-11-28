@@ -1,11 +1,10 @@
+import better.files._
 import net.ruippeixotog.scalascraper.browser.{Browser, JsoupBrowser}
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model._
-import better.files._
-import org.json4s.native.JsonMethods._
 import org.json4s.JsonDSL._
-
+import org.json4s.native.JsonMethods._
 
 import scala.annotation.tailrec
 
@@ -13,8 +12,13 @@ object Main {
 
   /* Util functions */
 
-  def zipPairs[A](l : List[A]): List[(A,A)] = l match {
-    case a :: b :: rest => (a,b) :: zipPairs(rest)
+  def foundedAsInt(foundedString: Option[String]): Option[Int] = foundedString match {
+    case Some(founded) => Some(founded.toInt)
+    case None => None
+  }
+
+  def zipPairs[A](l: List[A]): List[(A, A)] = l match {
+    case a :: b :: rest => (a, b) :: zipPairs(rest)
     case _ => Nil
   }
 
@@ -34,7 +38,7 @@ object Main {
     case None => None
   }
 
-  def filterHeadquarters(countryOption: Option[String], initialHeadquartersOption: Option[String]) : Option[List[String]] = countryOption match {
+  def filterHeadquarters(countryOption: Option[String], initialHeadquartersOption: Option[String]): Option[List[String]] = countryOption match {
     case Some(country) => initialHeadquartersOption match {
       case Some(headquarters) => country match {
         case "United States" => Some(zipPairs(headquarters.split(",").toList).map(item => item._1))
@@ -100,7 +104,7 @@ object Main {
 
   def parseDocument(document: Document, directory: File): Unit = {
     val name = parseName(document >> element("div.profile-heading--desktop") >> text("h1"))
-    val file : File = (directory/s"${name.get}.json")
+    val file: File = (directory / s"${name.get}.json")
     println(name.get)
     val ticker = parseTicker(document >> element("div.profile-heading--desktop") >> text("h1"))
     val marketCap = parseElement(document, "div.profile-datapoint__data-title:contains(Market Cap),span.profile-row--type.profile-row--valuation-text:contains(Market Cap)")
@@ -131,7 +135,7 @@ object Main {
       ("ticker" -> ticker) ~
       ("marketCap" -> toDollars(marketCap)) ~
       ("industry" -> industries) ~
-      ("founded" -> founded) ~
+      ("founded" -> foundedAsInt(founded)) ~
       ("country" -> country) ~
       ("ceo" -> ceo) ~
       ("employees" -> transformEmployees(employees)) ~
@@ -142,7 +146,7 @@ object Main {
     file.write(compact(render(json)))
   }
 
-  @tailrec def parseNext(baseUrl: String, link: String, browser: Browser, directory : File): Unit = {
+  @tailrec def parseNext(baseUrl: String, link: String, browser: Browser, directory: File): Unit = {
     val document: Document = browser.get(link): Document
     document >?> element("a.profile-nav__next") >> attr("href") match {
       case Some(nextLink) =>
@@ -170,7 +174,7 @@ object Main {
   }
 
   def main(args: Array[String]): Unit = {
-    val directory : File = "./jsonDocuments".toFile.createIfNotExists(asDirectory = true, createParents = true)
+    val directory: File = "./jsonDocuments".toFile.createIfNotExists(asDirectory = true, createParents = true)
     val browser = JsoupBrowser()
     parseNext("https://www.forbes.com", "https://www.forbes.com/companies/icbc/?list=global2000", browser, directory)
   }
